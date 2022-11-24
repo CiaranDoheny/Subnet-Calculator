@@ -27,14 +27,32 @@ else:
 
 # Ask for a subnet mask, turn the string into a int
 # Calculate and print out the number of useable hosts in that range
+# Print bespoke outputs for /31 and /32 (maths functions don't work for these) 
 
 submask = input("What is the subnet mask?:")
 submask = int(submask)
 
-if submask > 32:
-    print(f"{submask} is not a valid subnet mask, up to 32 bits only.")
-	
 hosts = 32 - submask
 hosts = 2**hosts - 2
 
-print (f"There are {hosts} host addresses in that range")
+if submask > 32:
+    print(f"{submask} is not a valid subnet mask, up to 32 bits only.")
+elif submask == 31:
+    print("/31 can be used as a point-to-point address only")
+elif submask == 32:
+    print("/32 has no usable host addresses and is typically used as a loopback address")
+else:
+    print (f"There are {hosts} host addresses in {ipaddress}/{submask}")
+
+
+
+# Below this is test code, works only for a /26 - I'm sure that this could be done better
+
+if submask == 26 and ipoct4 >= 0 and ipoct4 < 64:
+    print(F"The Network is:\t\t{ipoct1}.{ipoct2}.{ipoct3}.0/{submask}\nFirst available IP is:\t {ipoct1}.{ipoct2}.{ipoct3}.1\nLast available IP is:\t {ipoct1}.{ipoct2}.{ipoct3}.62\nBroadcast Address is:\t {ipoct1}.{ipoct2}.{ipoct3}.63")
+elif submask == 26 and ipoct4 >= 64 and ipoct4 < 128: 
+    print(F"The Network is:\t\t{ipoct1}.{ipoct2}.{ipoct3}.64/{submask}\nFirst available IP is:\t {ipoct1}.{ipoct2}.{ipoct3}.65\nLast available IP is:\t {ipoct1}.{ipoct2}.{ipoct3}.126\nBroadcast Address is:\t {ipoct1}.{ipoct2}.{ipoct3}.127")
+elif submask == 26 and ipoct4 >= 128 and ipoct4 < 192:
+    print(F"The Network is:\t\t{ipoct1}.{ipoct2}.{ipoct3}.128/{submask}\nFirst available IP is:\t {ipoct1}.{ipoct2}.{ipoct3}.129\nLast available IP is:\t {ipoct1}.{ipoct2}.{ipoct3}.190\nBroadcast Address is:\t {ipoct1}.{ipoct2}.{ipoct3}.191")
+elif submask == 26 and ipoct4 >= 192 and ipoct4 < 255: 
+    print(F"The Network is:\t\t{ipoct1}.{ipoct2}.{ipoct3}.192/{submask}\nFirst available IP is:\t {ipoct1}.{ipoct2}.{ipoct3}.193\nLast available IP is:\t {ipoct1}.{ipoct2}.{ipoct3}.254\nBroadcast Address is:\t {ipoct1}.{ipoct2}.{ipoct3}.255")
